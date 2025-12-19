@@ -1,0 +1,59 @@
+{
+  "properties": {
+    "displayName": "NIST SP 800-53 Rev. 5",
+    "policyType": "Custom",
+    "description": "This initiative includes policies that address NIST SP 800-53 Rev. 5 controls for FedRAMP Moderate and High.",
+    "metadata": {
+      "version": "5.0.0",
+      "category": "Regulatory Compliance",
+      "source": "NIST"
+    },
+    "policyDefinitions": [
+      {
+        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/a6fb4358-5bf4-4ad7-ba82-2cd2f41ce5e9",
+        "policyDefinitionReferenceId": "AC-2_AccountManagement",
+        "parameters": {}
+      },
+      {
+        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/0b15565f-aa9e-48ba-8619-45960f2c314d",
+        "policyDefinitionReferenceId": "AC-3_AccessEnforcement",
+        "parameters": {}
+      },
+      {
+        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/0e60b895-3786-45da-8377-9c6b4b6ac5f9",
+        "policyDefinitionReferenceId": "AU-2_AuditEvents",
+        "parameters": {}
+      },
+      {
+        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/013e242c-8828-4970-87b3-ab247555486d",
+        "policyDefinitionReferenceId": "AU-12_AuditGeneration",
+        "parameters": {}
+      },
+      {
+        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/564feb30-bf6a-4854-b4bb-0d2d2d1e6c66",
+        "policyDefinitionReferenceId": "CM-7_LeastFunctionality",
+        "parameters": {}
+      },
+      {
+        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/0961003e-5a0a-4549-abde-af6a37f2724d",
+        "policyDefinitionReferenceId": "SC-7_BoundaryProtection",
+        "parameters": {}
+      },
+      {
+        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/404c3081-a854-4457-ae30-26a93ef643f9",
+        "policyDefinitionReferenceId": "SC-8_TransmissionConfidentiality",
+        "parameters": {}
+      },
+      {
+        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/86efb160-8de7-451d-bc08-5d475b0aadae",
+        "policyDefinitionReferenceId": "SC-28_ProtectionAtRest",
+        "parameters": {}
+      },
+      {
+        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/5f0bc445-3935-4915-9981-011aa2b46147",
+        "policyDefinitionReferenceId": "SI-2_FlawRemediation",
+        "parameters": {}
+      }
+    ]
+  }
+}

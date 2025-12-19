@@ -1,0 +1,244 @@
+# CAF Naming Conventions for Azure Resources
+# Format: {resourceType}-{workload/purpose}-{environment}-{region}-{instance}
+
+naming_config:
+  # General Settings
+  separator: "-"
+  max_length: 63
+  use_lowercase: true
+  
+  # Environment Codes
+  environments:
+    development: "dev"
+    staging: "stg"
+    production: "prod"
+    sandbox: "sbx"
+    
+  # Region Codes
+  regions:
+    # Azure Commercial
+    eastus: "eus"
+    eastus2: "eus2"
+    westus: "wus"
+    westus2: "wus2"
+    centralus: "cus"
+    northcentralus: "ncus"
+    southcentralus: "scus"
+    westcentralus: "wcus"
+    canadacentral: "cac"
+    canadaeast: "cae"
+    brazilsouth: "brs"
+    northeurope: "neu"
+    westeurope: "weu"
+    uksouth: "uks"
+    ukwest: "ukw"
+    francecentral: "frc"
+    germanywestcentral: "gwc"
+    switzerlandnorth: "swn"
+    norwayeast: "noe"
+    swedencentral: "swc"
+    eastasia: "eas"
+    southeastasia: "seas"
+    japaneast: "jpe"
+    japanwest: "jpw"
+    australiaeast: "aue"
+    australiasoutheast: "ause"
+    centralindia: "cin"
+    southindia: "sin"
+    westindia: "win"
+    koreacentral: "koc"
+    koreasouth: "kos"
+    southafricanorth: "san"
+    uaenorth: "uan"
+    
+    # Azure Government
+    usgovvirginia: "ugv"
+    usgovtexas: "ugt"
+    usgovarizona: "uga"
+    usdodeast: "ude"
+    usdodcentral: "udc"
+
+  # Resource Type Prefixes (CAF Standard)
+  resource_types:
+    # General
+    resource_group: "rg"
+    management_group: "mg"
+    policy_definition: "policy"
+    policy_initiative: "initiative"
+    
+    # Networking
+    virtual_network: "vnet"
+    subnet: "snet"
+    network_interface: "nic"
+    public_ip: "pip"
+    load_balancer: "lb"
+    load_balancer_internal: "lbi"
+    network_security_group: "nsg"
+    application_security_group: "asg"
+    route_table: "rt"
+    route: "route"
+    vnet_peering: "peer"
+    virtual_network_gateway: "vgw"
+    local_network_gateway: "lgw"
+    vpn_connection: "cn"
+    expressroute_circuit: "erc"
+    application_gateway: "agw"
+    azure_firewall: "afw"
+    azure_firewall_policy: "afwp"
+    dns_zone: "dnsz"
+    private_dns_zone: "pdnsz"
+    private_endpoint: "pe"
+    traffic_manager: "tm"
+    front_door: "fd"
+    cdn_profile: "cdnp"
+    cdn_endpoint: "cdne"
+    bastion_host: "bas"
+    nat_gateway: "ng"
+    ddos_protection_plan: "ddos"
+    
+    # Compute
+    virtual_machine: "vm"
+    virtual_machine_scale_set: "vmss"
+    availability_set: "avail"
+    proximity_placement_group: "ppg"
+    vm_storage_account: "stvm"
+    azure_arc_enabled_server: "arcs"
+    azure_arc_enabled_kubernetes: "arck"
+    cloud_service: "cld"
+    
+    # Containers
+    aks_cluster: "aks"
+    container_registry: "acr"
+    container_instance: "aci"
+    service_fabric_cluster: "sf"
+    
+    # Databases
+    sql_server: "sql"
+    sql_database: "sqldb"
+    sql_elastic_pool: "sqlep"
+    sql_managed_instance: "sqlmi"
+    cosmos_db: "cosmos"
+    azure_cache_redis: "redis"
+    mysql_database: "mysql"
+    postgresql_database: "psql"
+    mariadb_database: "maria"
+    synapse_analytics: "syn"
+    synapse_workspace: "synw"
+    synapse_sql_pool: "synsp"
+    synapse_spark_pool: "synspark"
+    
+    # Storage
+    storage_account: "st"
+    storage_account_diagnostics: "stdiag"
+    azure_storagesimple: "ssimp"
+    
+    # AI + Machine Learning
+    azure_cognitive_search: "srch"
+    azure_cognitive_services: "cog"
+    azure_machine_learning: "mlw"
+    
+    # Analytics
+    azure_databricks: "dbw"
+    azure_stream_analytics: "asa"
+    azure_data_factory: "adf"
+    azure_data_lake_store: "dls"
+    azure_data_lake_analytics: "dla"
+    data_explorer_cluster: "dec"
+    analysis_services: "as"
+    hdinsight_hadoop: "hadoop"
+    hdinsight_hbase: "hbase"
+    hdinsight_kafka: "kafka"
+    hdinsight_spark: "spark"
+    hdinsight_storm: "storm"
+    hdinsight_ml_services: "mls"
+    power_bi_embedded: "pbi"
+    
+    # Integration
+    service_bus_namespace: "sb"
+    service_bus_queue: "sbq"
+    service_bus_topic: "sbt"
+    event_hub_namespace: "evh"
+    event_hub: "evh"
+    event_grid_domain: "evgd"
+    event_grid_topic: "evgt"
+    event_grid_subscription: "evgs"
+    logic_app: "logic"
+    api_management: "apim"
+    
+    # Management & Governance
+    log_analytics_workspace: "law"
+    application_insights: "appi"
+    automation_account: "aa"
+    recovery_services_vault: "rsv"
+    backup_vault: "bv"
+    azure_monitor_action_group: "ag"
+    purview_account: "pview"
+    
+    # Security
+    key_vault: "kv"
+    security_center: "sc"
+    sentinel_workspace: "sentinel"
+    
+    # Web
+    app_service_plan: "asp"
+    app_service: "app"
+    function_app: "func"
+    static_web_app: "stapp"
+    notification_hub: "ntf"
+    notification_hub_namespace: "ntfns"
+
+# Naming Examples
+examples:
+  - resource_type: "virtual_network"
+    workload: "hub"
+    environment: "prod"
+    region: "eastus"
+    instance: "001"
+    result: "vnet-hub-prod-eus-001"
+    
+  - resource_type: "log_analytics_workspace"
+    workload: "monitor"
+    environment: "prod"
+    region: "eastus"
+    instance: "001"
+    result: "law-monitor-prod-eus-001"
+    
+  - resource_type: "key_vault"
+    workload: "secrets"
+    environment: "prod"
+    region: "eastus"
+    instance: "001"
+    result: "kv-secrets-prod-eus-001"
+    
+  - resource_type: "storage_account"
+    workload: "diag"
+    environment: "prod"
+    region: "eastus"
+    instance: "001"
+    result: "stdiagprodeus001"  # No hyphens for storage accounts
+    
+  - resource_type: "resource_group"
+    workload: "networking"
+    environment: "prod"
+    region: "eastus"
+    instance: "001"
+    result: "rg-networking-prod-eus-001"
+
+# Special Rules
+special_rules:
+  storage_account:
+    - "No hyphens allowed"
+    - "Lowercase letters and numbers only"
+    - "3-24 characters"
+    - "Globally unique"
+    
+  key_vault:
+    - "3-24 characters"
+    - "Alphanumerics and hyphens"
+    - "Start with letter"
+    - "Globally unique"
+    
+  container_registry:
+    - "5-50 characters"
+    - "Alphanumeric only"
+    - "Globally unique"

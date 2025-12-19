@@ -1,0 +1,319 @@
+# Azure RBAC Role Assignments Configuration
+# Integrates with Azure AD groups for least-privilege access
+
+# Built-in Azure Roles Reference
+azure_builtin_roles:
+  # Owner & Contributor
+  owner: "8e3af657-a8ff-443c-a75c-2fe8c4bcb635"
+  contributor: "b24988ac-6180-42a0-ab88-20f7382dd24c"
+  reader: "acdd72a7-3385-48ef-bd42-f606fba81ae7"
+  
+  # Identity & Access Management
+  user_access_administrator: "18d7d88d-d35e-4fb5-a5c3-7773c20a72d9"
+  managed_identity_operator: "f1a07417-d97a-45cb-824c-7a7467783830"
+  managed_identity_contributor: "e40ec5ca-96e0-45a2-b4ff-59039f2c2b59"
+  
+  # Networking
+  network_contributor: "4d97b98b-1d4f-4787-a291-c67834d212e7"
+  dns_zone_contributor: "befefa01-2a29-4197-83a8-272ff33ce314"
+  private_dns_zone_contributor: "b12aa53e-6015-4669-85d0-8515ebb3ae7f"
+  
+  # Security
+  security_admin: "fb1c8493-542b-48eb-b624-b4c8fea62acd"
+  security_reader: "39bc4728-0917-49c7-9d2c-d95423bc2eb4"
+  key_vault_administrator: "00482a5a-887f-4fb3-b215-cfd612c1d5a7"
+  key_vault_secrets_officer: "b86a8fe4-44ce-4948-aee5-eccb2c155cd7"
+  key_vault_secrets_user: "4633458b-17de-408a-b874-0445c86b69e6"
+  key_vault_crypto_officer: "14b46e9e-c2b7-41b4-b07b-48a6ebf60603"
+  key_vault_crypto_user: "12338af0-0e69-4776-bea7-57ae8d297424"
+  
+  # Monitoring
+  monitoring_contributor: "749f88d5-cbae-40b8-bcfc-e573ddc772fa"
+  monitoring_reader: "43d0d8ad-25c7-4714-9337-8ba259a9fe05"
+  log_analytics_contributor: "92aaf0da-9dab-42b6-94a3-d43ce8d16293"
+  log_analytics_reader: "73c42c96-874c-492b-b04d-ab87d138a893"
+  
+  # Storage
+  storage_account_contributor: "17d1049b-9a84-46fb-8f53-869881c3d3ab"
+  storage_blob_data_owner: "b7e6dc6d-f1e8-4753-8033-0f276bb0955b"
+  storage_blob_data_contributor: "ba92f5b4-2d11-453d-a403-e96b0029c9fe"
+  storage_blob_data_reader: "2a2b9908-6ea1-4ae2-8e65-a410df84e7d1"
+  
+  # Compute
+  virtual_machine_contributor: "9980e02c-c2be-4d73-94e8-173b1dc7cf3c"
+  virtual_machine_administrator_login: "1c0163c0-47e6-4577-8991-ea5c82e286e4"
+  virtual_machine_user_login: "fb879df8-f326-4884-b1cf-06f3ad86be52"
+  
+  # Database
+  sql_db_contributor: "9b7fa17d-e63e-47b0-bb0a-15c516ac86ec"
+  sql_server_contributor: "6d8ee4ec-f05a-4a1d-8b00-a9b17e38b437"
+  cosmos_db_account_reader: "fbdf93bf-df7d-467e-a4d2-9458aa1360c8"
+  
+  # Policy
+  resource_policy_contributor: "36243c78-bf99-498c-9df9-86d9f8d28608"
+  
+  # Backup
+  backup_contributor: "5e467623-bb1f-42f4-a55d-6e525e11384b"
+  backup_operator: "00c29273-979b-4161-815c-10b084fb9324"
+  backup_reader: "a795c7a0-d4a2-40c1-ae25-d81f01202912"
+
+# Landing Zone Role Assignments
+landing_zone_roles:
+  # Management Subscription
+  management_subscription:
+    subscription_scope:
+      - role: "reader"
+        groups:
+          - "AZ-ALL-USERS"
+        description: "All users can read management resources"
+        
+    resource_groups:
+      monitoring:
+        - role: "log_analytics_contributor"
+          groups:
+            - "AZ-MONITORING-ADMINS"
+          description: "Monitoring admins manage Log Analytics"
+          
+        - role: "log_analytics_reader"
+          groups:
+            - "AZ-MONITORING-READERS"
+            - "AZ-SECURITY-TEAM"
+          description: "Read access to logs"
+          
+      automation:
+        - role: "contributor"
+          groups:
+            - "AZ-AUTOMATION-ADMINS"
+          description: "Manage automation accounts"
+          
+      backup:
+        - role: "backup_contributor"
+          groups:
+            - "AZ-BACKUP-ADMINS"
+          description: "Manage backup policies"
+          
+        - role: "backup_operator"
+          groups:
+            - "AZ-BACKUP-OPERATORS"
+          description: "Execute backup operations"
+
+  # Identity Subscription
+  identity_subscription:
+    subscription_scope:
+      - role: "reader"
+        groups:
+          - "AZ-IDENTITY-READERS"
+        description: "Read access to identity resources"
+        
+    resource_groups:
+      identity:
+        - role: "user_access_administrator"
+          groups:
+            - "AZ-IAM-ADMINS"
+          description: "Manage RBAC assignments"
+          
+        - role: "managed_identity_contributor"
+          groups:
+            - "AZ-IDENTITY-ADMINS"
+          description: "Manage managed identities"
+
+  # Connectivity Subscription
+  connectivity_subscription:
+    subscription_scope:
+      - role: "reader"
+        groups:
+          - "AZ-ALL-USERS"
+        description: "Read access to network resources"
+        
+    resource_groups:
+      hub_network:
+        - role: "network_contributor"
+          groups:
+            - "AZ-NETWORK-ADMINS"
+          description: "Manage hub network resources"
+          
+        - role: "reader"
+          groups:
+            - "AZ-NETWORK-READERS"
+          description: "Read network configuration"
+          
+      firewall:
+        - role: "contributor"
+          groups:
+            - "AZ-NETWORK-ADMINS"
+            - "AZ-SECURITY-ADMINS"
+          description: "Manage Azure Firewall"
+          
+      dns:
+        - role: "dns_zone_contributor"
+          groups:
+            - "AZ-NETWORK-ADMINS"
+          description: "Manage DNS zones"
+          
+        - role: "private_dns_zone_contributor"
+          groups:
+            - "AZ-NETWORK-ADMINS"
+          description: "Manage private DNS zones"
+
+  # Landing Zone Subscriptions (Template)
+  landing_zone_template:
+    subscription_scope:
+      - role: "reader"
+        groups:
+          - "AZ-ALL-USERS"
+        description: "Read access for all users"
+        
+      - role: "contributor"
+        groups:
+          - "AZ-WORKLOAD-{WORKLOAD}-ADMINS"
+        description: "Workload admins have full contributor access"
+        
+      - role: "reader"
+        groups:
+          - "AZ-WORKLOAD-{WORKLOAD}-READERS"
+        description: "Workload readers have read-only access"
+        
+    resource_groups:
+      application:
+        - role: "contributor"
+          groups:
+            - "AZ-WORKLOAD-{WORKLOAD}-DEVELOPERS"
+          description: "Developers manage application resources"
+          
+        - role: "virtual_machine_user_login"
+          groups:
+            - "AZ-WORKLOAD-{WORKLOAD}-USERS"
+          description: "Users can login to VMs"
+          
+      data:
+        - role: "sql_db_contributor"
+          groups:
+            - "AZ-WORKLOAD-{WORKLOAD}-DBA"
+          description: "DBAs manage databases"
+          
+        - role: "storage_blob_data_contributor"
+          groups:
+            - "AZ-WORKLOAD-{WORKLOAD}-DATA-ENGINEERS"
+          description: "Data engineers manage blob storage"
+          
+      security:
+        - role: "key_vault_administrator"
+          groups:
+            - "AZ-WORKLOAD-{WORKLOAD}-SECURITY"
+          description: "Security team manages Key Vault"
+          
+        - role: "key_vault_secrets_user"
+          groups:
+            - "AZ-WORKLOAD-{WORKLOAD}-APPLICATIONS"
+          description: "Applications read secrets"
+
+# Azure AD Group Naming Convention
+azure_ad_groups:
+  prefix: "AZ-"
+  format: "{PREFIX}{FUNCTION}-{WORKLOAD}-{ROLE}"
+  
+  examples:
+    - name: "AZ-NETWORK-ADMINS"
+      description: "Network administrators with full network control"
+      
+    - name: "AZ-WORKLOAD-WEBAPP-ADMINS"
+      description: "Web application workload administrators"
+      
+    - name: "AZ-SECURITY-READERS"
+      description: "Security team with read access to security resources"
+      
+    - name: "AZ-MONITORING-ADMINS"
+      description: "Monitoring and observability administrators"
+
+# Privileged Identity Management (PIM)
+pim_settings:
+  # Eligible assignments for just-in-time access
+  eligible_assignments:
+    - role: "owner"
+      groups:
+        - "AZ-SUBSCRIPTION-OWNERS"
+      max_duration: "8h"
+      require_justification: true
+      require_mfa: true
+      require_approval: true
+      approvers:
+        - "AZ-IAM-APPROVERS"
+        
+    - role: "user_access_administrator"
+      groups:
+        - "AZ-IAM-ADMINS"
+      max_duration: "4h"
+      require_justification: true
+      require_mfa: true
+      require_approval: true
+      
+    - role: "security_admin"
+      groups:
+        - "AZ-SECURITY-ADMINS"
+      max_duration: "8h"
+      require_justification: true
+      require_mfa: true
+      require_approval: false
+
+# Break Glass Accounts
+break_glass:
+  enabled: true
+  accounts:
+    - name: "breakglass01@company.com"
+      role: "owner"
+      scope: "management_group"
+      mfa_exempt: true
+      conditional_access_exempt: true
+      alert_on_use: true
+      
+    - name: "breakglass02@company.com"
+      role: "owner"
+      scope: "management_group"
+      mfa_exempt: true
+      conditional_access_exempt: true
+      alert_on_use: true
+
+# Service Principal Assignments
+service_principals:
+  terraform:
+    name: "sp-terraform-automation"
+    roles:
+      - scope: "management_group"
+        role: "contributor"
+      - scope: "management_group"
+        role: "user_access_administrator"
+      - scope: "management_group"
+        role: "resource_policy_contributor"
+    certificate_based_auth: true
+    
+  github_actions:
+    name: "sp-github-actions-cicd"
+    roles:
+      - scope: "subscription"
+        role: "contributor"
+    federated_identity: true
+    
+  monitoring:
+    name: "sp-monitoring-agent"
+    roles:
+      - scope: "subscription"
+        role: "monitoring_contributor"
+      - scope: "subscription"
+        role: "log_analytics_contributor"
+
+# Audit and Compliance
+audit_settings:
+  log_role_assignments: true
+  alert_on_privileged_role_use: true
+  quarterly_access_reviews: true
+  automated_least_privilege_analysis: true
+  
+  alerts:
+    - condition: "owner_role_assigned"
+      notify: "AZ-IAM-ADMINS"
+      
+    - condition: "user_access_administrator_assigned"
+      notify: "AZ-IAM-ADMINS"
+      
+    - condition: "custom_role_created"
+      notify: "AZ-SECURITY-ADMINS"

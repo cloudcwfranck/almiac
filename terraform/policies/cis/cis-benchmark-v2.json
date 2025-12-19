@@ -1,0 +1,58 @@
+{
+  "properties": {
+    "displayName": "CIS Microsoft Azure Foundations Benchmark v2.0.0",
+    "policyType": "Custom",
+    "description": "This initiative includes policies that address a subset of CIS Microsoft Azure Foundations Benchmark v2.0.0 recommendations.",
+    "metadata": {
+      "version": "2.0.0",
+      "category": "Regulatory Compliance",
+      "source": "CIS"
+    },
+    "policyDefinitions": [
+      {
+        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/0961003e-5a0a-4549-abde-af6a37f2724d",
+        "policyDefinitionReferenceId": "CIS_2.1.1_MonitorStorageAccountPublicAccess",
+        "parameters": {}
+      },
+      {
+        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/404c3081-a854-4457-ae30-26a93ef643f9",
+        "policyDefinitionReferenceId": "CIS_2.1.2_RequireSecureTransfer",
+        "parameters": {}
+      },
+      {
+        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/34c877ad-507e-4c82-993e-3452a6e0ad3c",
+        "policyDefinitionReferenceId": "CIS_2.1.3_StorageEncryption",
+        "parameters": {}
+      },
+      {
+        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/6fac406b-40ca-413b-bf8e-0bf964659c25",
+        "policyDefinitionReferenceId": "CIS_3.1_NSGFlowLogsRetention",
+        "parameters": {}
+      },
+      {
+        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/f6de0be7-9a8a-4b8a-b349-43cf02d4d7c6",
+        "policyDefinitionReferenceId": "CIS_4.1.1_SQLAuditingEnabled",
+        "parameters": {}
+      },
+      {
+        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/057d6cfe-9c4f-4a6d-bc60-14420ea1f1a9",
+        "policyDefinitionReferenceId": "CIS_4.1.3_SQLTDEEnabled",
+        "parameters": {}
+      },
+      {
+        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/17k78e20-9358-41c9-923c-fb736d382a12",
+        "policyDefinitionReferenceId": "CIS_5.1.1_DiagnosticSettingsEnabled",
+        "parameters": {}
+      },
+      {
+        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/e3576e28-8b17-4677-84c3-db2990658d64",
+        "policyDefinitionReferenceId": "CIS_5.2.1_ActivityLogRetention",
+        "parameters": {
+          "requiredRetentionDays": {
+            "value": "365"
+          }
+        }
+      }
+    ]
+  }
+}

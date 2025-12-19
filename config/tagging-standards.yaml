@@ -1,0 +1,260 @@
+# Azure Resource Tagging Standards
+# All tags are enforced via Azure Policy
+
+required_tags:
+  # Core Tags (Mandatory for all resources)
+  - name: "Environment"
+    description: "Deployment environment"
+    allowed_values:
+      - "dev"
+      - "staging"
+      - "prod"
+      - "sandbox"
+    enforcement: "mandatory"
+    
+  - name: "CostCenter"
+    description: "Cost allocation code for chargeback"
+    pattern: "^[A-Z0-9]{4,10}$"
+    example: "IT12345"
+    enforcement: "mandatory"
+    
+  - name: "Owner"
+    description: "Team or individual responsible for the resource"
+    pattern: "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
+    example: "cloud-team@company.com"
+    enforcement: "mandatory"
+    
+  - name: "Application"
+    description: "Application or workload name"
+    pattern: "^[a-zA-Z0-9-]{3,50}$"
+    example: "customer-portal"
+    enforcement: "mandatory"
+    
+  - name: "Criticality"
+    description: "Business criticality level"
+    allowed_values:
+      - "Low"
+      - "Medium"
+      - "High"
+      - "Mission-Critical"
+    enforcement: "mandatory"
+    
+  - name: "DataClassification"
+    description: "Data sensitivity classification"
+    allowed_values:
+      - "Public"
+      - "Internal"
+      - "Confidential"
+      - "Restricted"
+    enforcement: "mandatory"
+
+optional_tags:
+  # Compliance & Security
+  - name: "Compliance"
+    description: "Compliance frameworks applicable"
+    allowed_values:
+      - "CIS"
+      - "NIST"
+      - "FedRAMP"
+      - "ISO27001"
+      - "SOC2"
+      - "HIPAA"
+      - "PCI-DSS"
+    enforcement: "optional"
+    multi_value: true
+    
+  # Operational
+  - name: "MaintenanceWindow"
+    description: "Scheduled maintenance window"
+    pattern: "^(Mon|Tue|Wed|Thu|Fri|Sat|Sun)\\s\\d{2}:\\d{2}-\\d{2}:\\d{2}\\s(UTC|EST|PST)$"
+    example: "Sun 02:00-06:00 UTC"
+    enforcement: "optional"
+    
+  - name: "BackupPolicy"
+    description: "Backup retention policy"
+    allowed_values:
+      - "Daily"
+      - "Weekly"
+      - "Monthly"
+      - "None"
+    enforcement: "optional"
+    
+  - name: "DisasterRecovery"
+    description: "DR tier and RTO/RPO"
+    allowed_values:
+      - "Tier1-RTO4H-RPO1H"
+      - "Tier2-RTO8H-RPO4H"
+      - "Tier3-RTO24H-RPO8H"
+      - "None"
+    enforcement: "optional"
+    
+  # Project & Financial
+  - name: "Project"
+    description: "Project identifier or code"
+    pattern: "^[A-Z0-9-]{3,20}$"
+    example: "PROJ-2025-001"
+    enforcement: "optional"
+    
+  - name: "BudgetAmount"
+    description: "Monthly budget allocated"
+    pattern: "^\\$?[0-9,]+(\\.\\d{2})?$"
+    example: "$5000.00"
+    enforcement: "optional"
+    
+  # Technical
+  - name: "ManagedBy"
+    description: "Management tool or system"
+    allowed_values:
+      - "Terraform"
+      - "Bicep"
+      - "ARM"
+      - "Portal"
+      - "PowerShell"
+      - "CLI"
+    enforcement: "optional"
+    
+  - name: "Version"
+    description: "Application or infrastructure version"
+    pattern: "^v?\\d+\\.\\d+\\.\\d+$"
+    example: "v1.2.3"
+    enforcement: "optional"
+    
+  - name: "Repository"
+    description: "Source code repository URL"
+    pattern: "^https://.*$"
+    example: "https://github.com/org/repo"
+    enforcement: "optional"
+    
+  - name: "AutoShutdown"
+    description: "Automatic shutdown schedule for cost savings"
+    allowed_values:
+      - "Enabled"
+      - "Disabled"
+    enforcement: "optional"
+    
+  - name: "Monitoring"
+    description: "Monitoring configuration"
+    allowed_values:
+      - "Standard"
+      - "Enhanced"
+      - "None"
+    enforcement: "optional"
+
+# Resource Group Specific Tags
+resource_group_tags:
+  - name: "ResourceType"
+    description: "Primary resource type in the group"
+    allowed_values:
+      - "Networking"
+      - "Compute"
+      - "Storage"
+      - "Database"
+      - "Security"
+      - "Management"
+      - "Mixed"
+    enforcement: "mandatory"
+
+# Subscription Level Tags
+subscription_tags:
+  - name: "SubscriptionType"
+    description: "Purpose of the subscription"
+    allowed_values:
+      - "Management"
+      - "Identity"
+      - "Connectivity"
+      - "LandingZone"
+      - "Sandbox"
+    enforcement: "mandatory"
+    
+  - name: "Department"
+    description: "Owning department"
+    example: "IT-Operations"
+    enforcement: "mandatory"
+
+# Tag Inheritance Rules
+inheritance:
+  - source: "subscription"
+    targets:
+      - "resource_group"
+      - "resource"
+    tags:
+      - "Environment"
+      - "CostCenter"
+      - "Department"
+      
+  - source: "resource_group"
+    targets:
+      - "resource"
+    tags:
+      - "Application"
+      - "Owner"
+
+# Tag Validation Rules
+validation:
+  max_tags_per_resource: 50
+  tag_name_max_length: 512
+  tag_value_max_length: 256
+  case_sensitive: false
+  
+# Exemptions
+exemptions:
+  # Resources exempt from mandatory tagging
+  exempt_resource_types:
+    - "Microsoft.Network/networkWatchers"
+    - "Microsoft.Network/networkWatchers/connectionMonitors"
+    - "Microsoft.Security/assessments"
+    - "Microsoft.Security/complianceResults"
+  
+  exempt_resource_groups:
+    - "NetworkWatcherRG"
+    - "AzureBackupRG*"
+    - "cloud-shell-storage*"
+
+# Cost Allocation Strategy
+cost_allocation:
+  primary_dimension: "CostCenter"
+  secondary_dimension: "Application"
+  tertiary_dimension: "Environment"
+  
+  reporting_hierarchy:
+    - "Department"
+    - "CostCenter"
+    - "Application"
+    - "Environment"
+
+# Example Tag Sets
+examples:
+  production_web_app:
+    Environment: "prod"
+    CostCenter: "IT54321"
+    Owner: "webapp-team@company.com"
+    Application: "customer-portal"
+    Criticality: "High"
+    DataClassification: "Confidential"
+    Compliance: "SOC2,ISO27001"
+    ManagedBy: "Terraform"
+    BackupPolicy: "Daily"
+    DisasterRecovery: "Tier1-RTO4H-RPO1H"
+    Monitoring: "Enhanced"
+    
+  development_database:
+    Environment: "dev"
+    CostCenter: "DEV12345"
+    Owner: "database-team@company.com"
+    Application: "customer-db"
+    Criticality: "Low"
+    DataClassification: "Internal"
+    ManagedBy: "Terraform"
+    AutoShutdown: "Enabled"
+    BackupPolicy: "None"
+    
+  network_infrastructure:
+    Environment: "prod"
+    CostCenter: "NET99999"
+    Owner: "network-team@company.com"
+    Application: "core-network"
+    Criticality: "Mission-Critical"
+    DataClassification: "Internal"
+    Compliance: "CIS,NIST"
+    ManagedBy: "Terraform"
+    Monitoring: "Enhanced"
